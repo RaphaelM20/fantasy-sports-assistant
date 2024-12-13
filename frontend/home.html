@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Sports Assistant - Home</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+    <h1>Welcome to Fantasy Sports Assistant</h1>
+
+    <header>
+        <nav>
+            <a href="#best-offenses">Best Offenses</a>
+            <a href="#best-defenses">Best Defenses</a>
+            <a href="#weekly-matchups">Weekly Matchups</a>
+            <a href="#lineup-projection">Lineup Projection</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Best Offenses Section -->
+    <div class="section" id="best-offenses">
+        <h2>Best Offenses (Ranked 1–32)</h2>
+        <ul id="offenses-list"></ul>
+    </div>
+
+    <!-- Best Defenses Section -->
+    <div class="section" id="best-defenses">
+        <h2>Best Defenses (Ranked 1–32)</h2>
+        <ul id="defenses-list"></ul>
+    </div>
+
+    <!-- Weekly Matchups Section -->
+    <div class="section" id="weekly-matchups">
+        <h2>Weekly NFL Matchups</h2>
+        <div id="matchups-loading">Loading matchups...</div>
+        <ul id="matchups-list" style="display: none;"></ul>
+    </div>
+
+    <!-- Event Details Section -->
+    <div class="section">
+        <h2>Event Details</h2>
+        <div id="event-details"></div>
+    </div>
+
+    <!-- Fantasy Lineup Projection -->
+    <div class="section" id="lineup-projection">
+      <h2>Lineup Projection</h2>
+      <div id="lineup-container">
+          <div class="lineup-category">
+              <h3>Your Lineup</h3>
+              <label for="qb">Quarterback:</label>
+              <input type="text" id="qb" placeholder="Enter QB name">
+              <label for="wr1">Wide Receiver 1:</label>
+              <input type="text" id="wr1" placeholder="Enter WR1 name">
+              <label for="wr2">Wide Receiver 2:</label>
+              <input type="text" id="wr2" placeholder="Enter WR2 name">
+              <label for="rb1">Running Back 1:</label>
+              <input type="text" id="rb1" placeholder="Enter RB1 name">
+              <label for="rb2">Running Back 2:</label>
+              <input type="text" id="rb2" placeholder="Enter RB2 name">
+              <label for="te">Tight End:</label>
+              <input type="text" id="te" placeholder="Enter TE name">
+              <label for="flex">Flex (W/R/T):</label>
+              <input type="text" id="flex" placeholder="Enter Flex player name">
+              <label for="k">Kicker:</label>
+              <input type="text" id="k" placeholder="Enter Kicker name">
+              <label for="defense">Defense:</label>
+              <input type="text" id="defense" placeholder="Enter Defense name">
+          </div>
+
+          <div class="lineup-category">
+              <h3>Opponent's Lineup</h3>
+              <label for="op_qb">Quarterback:</label>
+              <input type="text" id="op_qb" placeholder="Enter QB name">
+              <label for="op_wr1">Wide Receiver 1:</label>
+              <input type="text" id="op_wr1" placeholder="Enter WR1 name">
+              <label for="op_wr2">Wide Receiver 2:</label>
+              <input type="text" id="op_wr2" placeholder="Enter WR2 name">
+              <label for="op_rb1">Running Back 1:</label>
+              <input type="text" id="op_rb1" placeholder="Enter RB1 name">
+              <label for="op_rb2">Running Back 2:</label>
+              <input type="text" id="op_rb2" placeholder="Enter RB2 name">
+              <label for="op_te">Tight End:</label>
+              <input type="text" id="op_te" placeholder="Enter TE name">
+              <label for="op_flex">Flex (W/R/T):</label>
+              <input type="text" id="op_flex" placeholder="Enter Flex player name">
+              <label for="op_k">Kicker:</label>
+              <input type="text" id="op_k" placeholder="Enter Kicker name">
+              <label for="op_defense">Defense:</label>
+              <input type="text" id="op_defense" placeholder="Enter Defense name">
+          </div>
+      </div>
+      <button onclick="calculateProjection()">Calculate Projected Points</button>
+      <p id="projected-score">Projected Points: --</p>
+      <p id="win-probability">Win Probability: --</p>
+  </div>
+
+    <!-- Include JS files at the end -->
+    <script src="scripts/matchups.js"></script>
+    <script src="scripts/eventDetails.js"></script>
+    <script src="scripts/projection.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>

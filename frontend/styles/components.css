@@ -1,0 +1,93 @@
+/* components.css */
+
+/* Header Appearance (visual styling for header, not layout) */
+header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+/* Aesthetic styling for .section (optional) */
+.section {
+  background-color: #fff;
+}
+
+/* lineup-category styling (visual component) */
+.lineup-category {
+  width: 45%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.lineup-category h3 {
+  margin-top: 0;
+}
+
+/* Buttons */
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Input Field Styling */
+.lineup-category input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Error Highlighting */
+input:invalid {
+  border: 2px solid red;
+}
+
+/* Matchups loading and list styling */
+#matchups-loading {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+}
+
+#matchups-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#matchups-list li {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Responsive adjustments for components */
+@media (max-width: 768px) {
+  .lineup-category {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

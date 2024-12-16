@@ -30,6 +30,14 @@ const EVENT_URL = 'https://nfl-api-data.p.rapidapi.com/nfl-single-events';
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
+// Serve static files from the 'frontend' folder
+app.use(express.static('frontend'));
+
+// Redirect root URL to register.html
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/frontend/register.html');
+});
+
 // GET Weekly Matchups
 app.get('/api/matchups', async (req, res) => {
   try {

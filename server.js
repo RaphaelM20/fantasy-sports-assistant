@@ -10,6 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 console.log('MONGO_URI:', process.env.MONGO_URI); // Add this line to confirm the value
+console.log('Environment Variables:', process.env);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)

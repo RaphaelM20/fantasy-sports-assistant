@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -8,8 +9,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+console.log('MONGO_URI:', process.env.MONGO_URI); // Add this line to confirm the value
+
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/fantasy-sports-assistant')
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
   })

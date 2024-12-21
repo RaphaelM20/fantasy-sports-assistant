@@ -23,18 +23,18 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();  // Prevent form from submitting normally
-
+    
             // Get form data
             const formData = new FormData(event.target);
             const data = {
                 email: formData.get('email'),
                 password: formData.get('password')
             };
-
+    
             console.log('Submitting login request with data:', data); // Log submitted data
-
+    
             // Make API request to login
-            fetch('https://fantasy-football-assistant-production.up.railway.app/api/auth/register', {
+            fetch('https://fantasy-football-assistant-production.up.railway.app/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,7 +43,7 @@
             })
             .then(response => {
                 console.log('Received response:', response); // Log the raw response
-
+    
                 if (!response.ok) {
                     throw new Error('Login failed');
                 }
@@ -51,12 +51,12 @@
             })
             .then(data => {
                 console.log('Parsed response data:', data); // Log parsed JSON data
-
+    
                 if (data.token) {
                     // On successful login, store token
                     alert('Login successful!');
                     localStorage.setItem('token', data.token);
-
+    
                     // Redirect to a protected page or home page after login
                     window.location.href = 'home.html';
                 } else {
@@ -69,5 +69,6 @@
             });
         });
     </script>
+    
 </body>
 </html>

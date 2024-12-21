@@ -24,15 +24,6 @@ header nav {
   justify-content: space-around;
 }
 
-/* Section layout (structural, max-width, margin/padding) */
-.section {
-  max-width: 1000px;
-  margin: 100px auto 20px; /* space for fixed header */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 /* Layout for lineup container */
 #lineup-container {
   display: flex;
@@ -50,17 +41,6 @@ header nav {
     flex-direction: column;
     align-items: center;
   }
-}
-
-/* General body styles */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0); /* Light gradient */
-  height: 100vh;
 }
 
 /* Form Container */
@@ -106,4 +86,20 @@ body {
 
 .form-container button:hover {
   background-color: #0056b3; /* Darker blue on hover */
+}
+
+body {
+  display: block; /* Default stacking behavior for the body */
+  margin: 0;
+  padding: 0;
+}
+
+.section {
+  display: block; /* Ensure sections stack vertically */
+  width: 100%;
+  margin: 20px 0; /* Add spacing between sections */
+}
+
+#comparison-container {
+  display: block; /* Stacks comparison tools vertically */
 }

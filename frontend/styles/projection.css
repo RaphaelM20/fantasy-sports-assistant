@@ -1,0 +1,58 @@
+/* Autocomplete Container */
+.autocomplete {
+    position: relative;
+    display: flex; /* Align horizontally */
+    align-items: center; /* Vertically align input and points */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 100%; /* Match input width */
+    z-index: 1000;
+    display: none;
+    top: calc(100% + 5px); /* Position below input field */
+    left: 0; /* Align to left */
+}
+
+/* Show Dropdown on Focus or Hover */
+.player-input:focus + .dropdown-menu,
+.dropdown-menu:hover {
+    display: block;
+}
+
+/* Dropdown Items */
+.dropdown-menu li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Player Image */
+.dropdown-menu li img {
+    width: 100px;
+    height: 50px;
+    border-radius: 80%; /* Circular appearance */
+    margin-right: 10px;
+}
+
+/* Dropdown Hover Effect */
+.dropdown-menu li:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+}
+
+/* Projected Points */
+.projected-points {
+    font-weight: bold;
+    color: grey;
+    margin-left: 10px; /* Add spacing to the right of the input */
+}

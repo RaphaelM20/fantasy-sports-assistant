@@ -1,0 +1,70 @@
+/* General body styles for the landing page */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #e0e0e0, #cfcfcf); /* Subtle gradient */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Landing Page Container */
+.landing-page {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Left Side - Image */
+.landing-page-left {
+    flex: 1; /* Takes up half the screen */
+    background: url('../images/landing-page.png') no-repeat center center;
+    background-size: cover; /* Ensures the image fills the left side */
+}
+
+/* Right Side - Content */
+.landing-page-right {
+    flex: 1; /* Takes up half the screen */
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow between sections */
+}
+
+/* Title Text */
+.landing-page-right h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.landing-page-right a {
+    display: block;
+    text-decoration: none;
+    padding: 15px 30px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    width: 60%; /* Adjust button width */
+}
+
+.landing-page-right a.login {
+    background-color: #007bff; /* Blue for login */
+}
+
+.landing-page-right a.register {
+    background-color: #28a745; /* Green for register */
+}
+
+.landing-page-right a:hover {
+    opacity: 0.9; /* Subtle hover effect */
+}

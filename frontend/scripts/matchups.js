@@ -1,23 +1,23 @@
-// matchups.js
-
-// Function to get the current week based on the whitelist data
+// Function to get the current week from the whitelist
 async function getCurrentWeekFromWhitelist() {
   try {
-    // Fetch the whitelist data from your backend route
-    const whitelistResponse = await fetch('/api/whitelist');
-    const whitelistData = await whitelistResponse.json();
+    const response = await fetch('https://nfl-api-data.p.rapidapi.com/nfl-whitelist', {
+      method: 'GET',
+      headers: {
+        "X-RapidAPI-Key": "f014cc3394mshcaae187fa998756p11ec60jsn7d38a4ca5b89",
+        "X-RapidAPI-Host": "nfl-api-data.p.rapidapi.com",
+      },
+    });
 
-    // Find the "Regular Season" section in the response
+    const whitelistData = await response.json();
+
     const regularSeasonSection = whitelistData.sections.find(s => s.label === 'Regular Season');
     if (!regularSeasonSection || !regularSeasonSection.entries) {
       console.error('No regular season section found in whitelist data.');
       return null;
     }
 
-    // Today's date
     const today = new Date();
-
-    // Check which week matches today's date
     const currentWeekEntry = regularSeasonSection.entries.find(entry => {
       const start = new Date(entry.startDate);
       const end = new Date(entry.endDate);
@@ -25,14 +25,35 @@ async function getCurrentWeekFromWhitelist() {
     });
 
     if (!currentWeekEntry) {
-      console.warn('Season not started yet or no current week matches today\'s date.');
+      console.warn('Season not started yet or no week matches today\'s date.');
       return null;
     }
 
-    // Extract the week number (value) from the matched week entry
     return parseInt(currentWeekEntry.value, 10);
   } catch (error) {
     console.error('Error fetching or parsing whitelist data:', error);
+    return null;
+  }
+}
+
+// Function to fetch event details
+async function fetchEventDetails(eventId) {
+  try {
+    const response = await fetch(`https://nfl-api-data.p.rapidapi.com/nfl-single-events?id=${eventId}`, {
+      method: 'GET',
+      headers: {
+        "X-RapidAPI-Key": "f014cc3394mshcaae187fa998756p11ec60jsn7d38a4ca5b89",
+        "X-RapidAPI-Host": "nfl-api-data.p.rapidapi.com",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch event details: ${response.status} ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching event details:', error);
     return null;
   }
 }
@@ -52,35 +73,56 @@ async function loadCurrentWeekMatchups() {
   }
 
   try {
-    matchupsList.innerHTML = ''; // Clear old data
+    const response = await fetch(`https://nfl-api-data.p.rapidapi.com/nfl-weeks-events?year=2024&week=${currentWeek}&type=2`, {
+      method: 'GET',
+      headers: {
+        "X-RapidAPI-Key": "f014cc3394mshcaae187fa998756p11ec60jsn7d38a4ca5b89",
+        "X-RapidAPI-Host": "nfl-api-data.p.rapidapi.com",
+      },
+    });
 
-    const response = await fetch(`/api/matchups?year=2024&week=${currentWeek}&type=2`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch matchups: ${response.status} ${response.statusText}`);
+    }
+
     const data = await response.json();
 
     if (data.items && data.items.length > 0) {
-      data.items.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `Event ID: ${item.eventid}`;
-        li.style.padding = '8px';
-        li.style.borderBottom = '1px solid #ccc';
+      matchupsList.innerHTML = ''; // Clear old data
 
-        // Attach event listener (if loadEventDetails is used)
-        li.addEventListener('click', () => {
-          loadEventDetails(item.eventid);
-        });
+      for (const item of data.items) {
+        const eventDetails = await fetchEventDetails(item.eventid);
 
-        matchupsList.appendChild(li);
-      });
+        if (eventDetails) {
+          const competition = eventDetails.competitions?.[0];
+          const homeTeam = competition?.competitors.find(c => c.homeAway === 'home')?.team;
+          const awayTeam = competition?.competitors.find(c => c.homeAway === 'away')?.team;
+
+          const li = document.createElement('li');
+          li.textContent = `${awayTeam?.displayName || 'Unknown Away Team'} @ ${homeTeam?.displayName || 'Unknown Home Team'}`;
+          li.style.cursor = 'pointer';
+          li.style.padding = '8px';
+          li.style.borderBottom = '1px solid #ccc';
+
+          // Attach event listener for event details
+          li.addEventListener('click', () => {
+            loadEventDetails(eventDetails.id);
+          });
+
+          matchupsList.appendChild(li);
+        }
+      }
 
       matchupsLoading.style.display = 'none';
       matchupsList.style.display = 'block';
     } else {
-      matchupsLoading.textContent = 'No matchups found for the current week.';
+      matchupsLoading.textContent = 'No matchups found for this week.';
     }
   } catch (error) {
     console.error('Error loading matchups:', error);
-    matchupsLoading.textContent = 'Failed to load matchups.';
+    matchupsLoading.textContent = 'Failed to load matchups. Check your connection.';
   }
 }
 
 // Automatically load current week matchups when the page loads
+document.addEventListener('DOMContentLoaded', loadCurrentWeekMatchups);

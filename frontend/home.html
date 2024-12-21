@@ -7,30 +7,80 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/layout.css">
     <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/team-cards.css">
+    <link rel="stylesheet" href="styles/projection.css"> 
 </head>
 <body>
     <h1>Welcome to Fantasy Sports Assistant</h1>
 
     <header>
         <nav>
-            <a href="#best-offenses">Best Offenses</a>
-            <a href="#best-defenses">Best Defenses</a>
+            <a href="#team-comparison">Team Comparison</a>
             <a href="#weekly-matchups">Weekly Matchups</a>
             <a href="#lineup-projection">Lineup Projection</a>
             <a href="#" onclick="logout()">Logout</a>
         </nav>
     </header>
 
-    <!-- Best Offenses Section -->
-    <div class="section" id="best-offenses">
-        <h2>Best Offenses (Ranked 1–32)</h2>
-        <ul id="offenses-list"></ul>
-    </div>
+    <!-- Team Comparison Section -->
+    <div class="section" id="team-comparison">
+        <h2>Team and Player Comparison</h2>
+        <div class="toggle">
+            <button id="compare-teams-btn" class="active" onclick="toggleComparison('teams')">Compare Teams</button>
+            <button id="compare-players-btn" onclick="toggleComparison('players')">Compare Players</button>
+        </div>
 
-    <!-- Best Defenses Section -->
-    <div class="section" id="best-defenses">
-        <h2>Best Defenses (Ranked 1–32)</h2>
-        <ul id="defenses-list"></ul>
+        <div id="comparison-container">
+            <!-- Team Comparison -->
+            <div id="team-comparison-content" style="display: block;">
+                <div class="team-selection">
+                    <div class="team-box">
+                        <label for="team-select-a">Team A:</label>
+                        <select id="team-select-a" onchange="loadTeamDetails('team-select-a', 'team-details-a')">
+                            <option value="">Select a Team</option>
+                        </select>
+                        <div id="team-details-a" class="team-details"></div>
+                    </div>
+                    <div class="team-box">
+                        <label for="team-select-b">Team B:</label>
+                        <select id="team-select-b" onchange="loadTeamDetails('team-select-b', 'team-details-b')">
+                            <option value="">Select a Team</option>
+                        </select>
+                        <div id="team-details-b" class="team-details"></div>
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Team Statistics Section -->
+            <div class="stats-container">
+                <div class="stats-card" id="offense-card">
+                    <img src="images/helmet-offense.png" alt="Offense Helmet">
+                    <h4>Offense</h4>
+                    <p class="expand-label">Click to Expand</p>
+                </div>
+                <div class="stats-card" id="defense-card">
+                    <img src="images/helmet-defense.png" alt="Defense Helmet">
+                    <h4>Defense</h4>
+                    <p class="expand-label">Click to Expand</p>
+                </div>
+                <div class="stats-card" id="special-teams-card">
+                    <img src="images/helmet-special-teams.png" alt="Special Teams Helmet">
+                    <h4>Special Teams</h4>
+                    <p class="expand-label">Click to Expand</p>
+                </div>
+                <div class="stats-card" id="turnover-card">
+                    <img src="images/helmet-turnovers.png" alt="Turnovers Helmet">
+                    <h4>Turnovers</h4>
+                    <p class="expand-label">Click to Expand</p>
+                </div>
+            </div>                       
+        </div>
+
+        <!-- Player Comparison Placeholder -->
+        <div id="player-comparison-content" style="display: none;">
+            <h3>Player Comparison</h3>
+            <p>Player comparison tool coming soon!</p>
+        </div>
     </div>
 
     <!-- Weekly Matchups Section -->
@@ -41,68 +91,168 @@
     </div>
 
     <!-- Event Details Section -->
-    <div class="section">
+    <div class="section" id="event-details-section">
         <h2>Event Details</h2>
-        <div id="event-details"></div>
+        <div id="event-details" style="display: none;"></div>
     </div>
 
     <!-- Fantasy Lineup Projection -->
     <div class="section" id="lineup-projection">
-      <h2>Lineup Projection</h2>
-      <div id="lineup-container">
-          <div class="lineup-category">
-              <h3>Your Lineup</h3>
-              <label for="qb">Quarterback:</label>
-              <input type="text" id="qb" placeholder="Enter QB name">
-              <label for="wr1">Wide Receiver 1:</label>
-              <input type="text" id="wr1" placeholder="Enter WR1 name">
-              <label for="wr2">Wide Receiver 2:</label>
-              <input type="text" id="wr2" placeholder="Enter WR2 name">
-              <label for="rb1">Running Back 1:</label>
-              <input type="text" id="rb1" placeholder="Enter RB1 name">
-              <label for="rb2">Running Back 2:</label>
-              <input type="text" id="rb2" placeholder="Enter RB2 name">
-              <label for="te">Tight End:</label>
-              <input type="text" id="te" placeholder="Enter TE name">
-              <label for="flex">Flex (W/R/T):</label>
-              <input type="text" id="flex" placeholder="Enter Flex player name">
-              <label for="k">Kicker:</label>
-              <input type="text" id="k" placeholder="Enter Kicker name">
-              <label for="defense">Defense:</label>
-              <input type="text" id="defense" placeholder="Enter Defense name">
-          </div>
+        <h2>Lineup Projection</h2>
+        <div id="lineup-container" style="display: flex; justify-content: space-between;">
+            <!-- Your Lineup -->
+            <div class="lineup-category" style="width: 45%;">
+                <h3>Your Lineup</h3>
+    
+                <!-- Quarterback -->
+                <label for="qb">Quarterback:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="qb" placeholder="Enter QB name" class="player-input">
+                    <span class="projected-points">20 pts</span>
+                    <ul id="qb-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Wide Receiver 1 -->
+                <label for="wr1">Wide Receiver 1:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="wr1" placeholder="Enter WR1 name" class="player-input">
+                    <span class="projected-points">15 pts</span>
+                    <ul id="wr1-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Wide Receiver 2 -->
+                <label for="wr2">Wide Receiver 2:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="wr2" placeholder="Enter WR2 name" class="player-input">
+                    <span class="projected-points">15 pts</span>
+                    <ul id="wr2-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Running Back 1 -->
+                <label for="rb1">Running Back 1:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="rb1" placeholder="Enter RB1 name" class="player-input">
+                    <span class="projected-points">12 pts</span>
+                    <ul id="rb1-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Running Back 2 -->
+                <label for="rb2">Running Back 2:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="rb2" placeholder="Enter RB2 name" class="player-input">
+                    <span class="projected-points">12 pts</span>
+                    <ul id="rb2-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Tight End -->
+                <label for="te">Tight End:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="te" placeholder="Enter TE name" class="player-input">
+                    <span class="projected-points">10 pts</span>
+                    <ul id="te-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Place Kicker -->
+                <label for="k">Place Kicker:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="k" placeholder="Enter Place Kicker name" class="player-input">
+                    <span class="projected-points">7 pts</span>
+                    <ul id="k-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Flex -->
+                <label for="flex">Flex (WR/RB/TE):</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="flex" placeholder="Enter Flex player name" class="player-input">
+                    <span class="projected-points">12 pts</span>
+                    <ul id="flex-options" class="dropdown-menu"></ul>
+                </div>
+    
+                <!-- Defense -->
+                <label for="defense">Defense:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="defense" placeholder="Enter Defense name" class="player-input">
+                    <span class="projected-points">5 pts</span>
+                    <ul id="defense-options" class="dropdown-menu"></ul>
+                </div>
+            </div>
+    
+            <!-- Opponent's Lineup -->
+            <div class="lineup-category" style="width: 45%;">
+                <h3>Opponent's Lineup</h3>
+    
+                <!-- Repeating the same structure for Opponent -->
+                <label for="qb-opponent">Quarterback:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="qb-opponent" placeholder="Enter QB name" class="player-input">
+                    <span class="projected-points">20 pts</span>
+                    <ul id="qb-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="wr1-opponent">Wide Receiver 1:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="wr1-opponent" placeholder="Enter WR1 name" class="player-input">
+                    <span class="projected-points">15 pts</span>
+                    <ul id="wr1-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="wr2-opponent">Wide Receiver 2:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="wr2-opponent" placeholder="Enter WR2 name" class="player-input">
+                    <span class="projected-points">15 pts</span>
+                    <ul id="wr2-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="rb1-opponent">Running Back 1:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="rb1-opponent" placeholder="Enter RB1 name" class="player-input">
+                    <span class="projected-points">12 pts</span>
+                    <ul id="rb1-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="rb2-opponent">Running Back 2:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="rb2-opponent" placeholder="Enter RB2 name" class="player-input">
+                    <span class="projected-points">12 pts</span>
+                    <ul id="rb2-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="te-opponent">Tight End:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="te-opponent" placeholder="Enter TE name" class="player-input">
+                    <span class="projected-points">10 pts</span>
+                    <ul id="te-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="k-opponent">Place Kicker:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="k-opponent" placeholder="Enter Place Kicker name" class="player-input">
+                    <span class="projected-points">7 pts</span>
+                    <ul id="k-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="flex-opponent">Flex (WR/RB/TE):</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="flex-opponent" placeholder="Enter Flex player name" class="player-input">
+                    <span class="projected-points">12 pts</span>
+                    <ul id="flex-options-opponent" class="dropdown-menu"></ul>
+                </div>
+    
+                <label for="defense-opponent">Defense:</label>
+                <div class="autocomplete" style="position: relative;">
+                    <input type="text" id="defense-opponent" placeholder="Enter Defense name" class="player-input">
+                    <span class="projected-points">5 pts</span>
+                    <ul id="defense-options-opponent" class="dropdown-menu"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-          <div class="lineup-category">
-              <h3>Opponent's Lineup</h3>
-              <label for="op_qb">Quarterback:</label>
-              <input type="text" id="op_qb" placeholder="Enter QB name">
-              <label for="op_wr1">Wide Receiver 1:</label>
-              <input type="text" id="op_wr1" placeholder="Enter WR1 name">
-              <label for="op_wr2">Wide Receiver 2:</label>
-              <input type="text" id="op_wr2" placeholder="Enter WR2 name">
-              <label for="op_rb1">Running Back 1:</label>
-              <input type="text" id="op_rb1" placeholder="Enter RB1 name">
-              <label for="op_rb2">Running Back 2:</label>
-              <input type="text" id="op_rb2" placeholder="Enter RB2 name">
-              <label for="op_te">Tight End:</label>
-              <input type="text" id="op_te" placeholder="Enter TE name">
-              <label for="op_flex">Flex (W/R/T):</label>
-              <input type="text" id="op_flex" placeholder="Enter Flex player name">
-              <label for="op_k">Kicker:</label>
-              <input type="text" id="op_k" placeholder="Enter Kicker name">
-              <label for="op_defense">Defense:</label>
-              <input type="text" id="op_defense" placeholder="Enter Defense name">
-          </div>
-      </div>
-      <button onclick="calculateProjection()">Calculate Projected Points</button>
-      <p id="projected-score">Projected Points: --</p>
-      <p id="win-probability">Win Probability: --</p>
-  </div>
-
-    <!-- Include JS files at the end -->
+    <!-- Include JS files -->
     <script src="scripts/matchups.js"></script>
     <script src="scripts/eventDetails.js"></script>
     <script src="scripts/projection.js"></script>
-    <script src="scripts/main.js"></script>
+    <script src="scripts/teamComparison.js"></script>
+    <script src="scripts/teamStats.js"></script>
 </body>
 </html>

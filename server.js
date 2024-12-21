@@ -35,7 +35,7 @@ app.use(express.static('frontend'));
 
 // Redirect root URL to register.html
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/frontend/register.html');
+  res.sendFile(__dirname + '/frontend/landing-page.html');
 });
 
 // GET Weekly Matchups
